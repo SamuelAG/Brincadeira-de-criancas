@@ -1,5 +1,9 @@
 package SemaphoreLogic;
 
 public class Basket {
-    static int balls = 0;
+    public static int balls = 0;
+
+    public static int getBalls() {
+        return balls;
+    }
 }
