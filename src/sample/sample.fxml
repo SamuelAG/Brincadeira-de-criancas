@@ -41,4 +41,5 @@
         </TextField>
     </HBox>
     <Button layoutX="240.0" layoutY="302.0" mnemonicParsing="false" onAction="#addChild" text="New Child" />
+   <Button layoutX="333.0" layoutY="302.0" mnemonicParsing="false" onAction="#updateTableRealTime" text="update" />
 </AnchorPane>

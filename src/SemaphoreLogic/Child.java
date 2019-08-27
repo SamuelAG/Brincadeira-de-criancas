@@ -17,11 +17,13 @@ public class Child extends Thread {
 
     @Override
     public void run() {
-        for(int i = 0; i < timePlaying; i++) {
-            for(int j = 0; j < 5000000; j++) {
-                for(int k = 0; k < 100000000; k++){}
+        for(int i = 0; i < timePlaying;) {
+            for(int j = 0; j < 5000; j++) {
+                System.out.println(j);
+                for(int k = 0; k < 1000; k++){}
             }
-            System.out.println(idChild + " " + i);
+            System.out.println(idChild + " " + timePlaying);
+            timePlaying--;
         }
         Basket.balls++;
         System.out.println("Thread: " + idChild + ". balls:" + Basket.balls);

@@ -7,12 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +50,18 @@ public class Controller implements Initializable {
     List<Child> list = new ArrayList<>();
 
     @FXML
-    void addChild(ActionEvent event) {
+    void addChild(ActionEvent event) throws IOException {
         Child newChild = new Child();
         getValues(newChild);
         list.add(newChild);
-        newChild.run();
         cleanFields();
         updateList();
+        newChild.start();
+    }
 
+    @FXML
+    void updateTableRealTime(ActionEvent event) throws IOException {
+        updateList();
     }
 
     private void getValues(Child child) {
