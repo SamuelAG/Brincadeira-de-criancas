@@ -2,6 +2,7 @@ package sample;
 
 import SemaphoreLogic.Basket;
 import SemaphoreLogic.Child;
+import SemaphoreLogic.Park;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,21 +48,21 @@ public class Controller implements Initializable {
     @FXML
     private TextField txtTimeQuiet;
 
-    List<Child> list = new ArrayList<>();
+    private Park park = new Park(5);
 
     @FXML
     void addChild(ActionEvent event) throws IOException {
         Child newChild = new Child();
         getValues(newChild);
-        list.add(newChild);
+        park.addChild(newChild);
         cleanFields();
         updateList();
-        newChild.start();
     }
 
     @FXML
     void updateTableRealTime(ActionEvent event) throws IOException {
         updateList();
+        System.out.println("Tamanho da lista: " + park.getList().size());
     }
 
     private void getValues(Child child) {
@@ -79,7 +80,7 @@ public class Controller implements Initializable {
     }
 
     private void updateList() {
-        tblChildren.getItems().setAll(list);
+        tblChildren.getItems().setAll(park.getList());
     }
 
     private void cleanFields() {
