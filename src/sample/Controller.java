@@ -3,20 +3,13 @@ package sample;
 import SemaphoreLogic.Basket;
 import SemaphoreLogic.Child;
 import SemaphoreLogic.Park;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -48,7 +41,10 @@ public class Controller implements Initializable {
     @FXML
     private TextField txtTimeQuiet;
 
-    private Park park = new Park(5);
+    @FXML
+    private Label balls;
+
+    private Park park = new Park(3);
 
     @FXML
     void addChild(ActionEvent event) throws IOException {
@@ -63,6 +59,8 @@ public class Controller implements Initializable {
     void updateTableRealTime(ActionEvent event) throws IOException {
         updateList();
         System.out.println("Tamanho da lista: " + park.getList().size());
+        System.out.println("BOLAS: " + Basket.balls);
+        balls.setText(String.valueOf(Basket.balls));
     }
 
     private void getValues(Child child) {
@@ -87,6 +85,7 @@ public class Controller implements Initializable {
         txtIdChild.setText("");
         txtTimePlaying.setText("");
         timePlayingColumn.setText("");
+        txtTimeQuiet.setText("");
         checkBoxBall.setSelected(false);
     }
 
@@ -94,5 +93,6 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configureList();
         updateList();
+        balls.setText(String.valueOf(Basket.balls));
     }
 }

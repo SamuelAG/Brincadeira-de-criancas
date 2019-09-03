@@ -5,29 +5,32 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Park {
-    private Semaphore semaphore;
+    private Semaphore empty;
+    private Semaphore full;
     private Semaphore mutex;
     private List<Child> list;
 
     public Park(int maxBalls) {
-        semaphore = new Semaphore(maxBalls);
+        empty = new Semaphore(maxBalls);
+        full = new Semaphore(0);
         mutex = new Semaphore(1);
         list = new ArrayList<>();
     }
 
     public void addChild(Child child) {
-        child.setSemaphore(semaphore);
+        child.setEmpty(empty);
+        child.setFull(full);
         child.setMutex(mutex);
         list.add(child);
         child.start();
     }
 
-    public Semaphore getSemaphore() {
-        return semaphore;
+    public Semaphore getEmpty() {
+        return empty;
     }
 
-    public void setSemaphore(Semaphore semaphore) {
-        this.semaphore = semaphore;
+    public void setEmpty(Semaphore empty) {
+        this.empty = empty;
     }
 
     public Semaphore getMutex() {
