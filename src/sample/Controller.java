@@ -65,16 +65,23 @@ public class Controller implements Initializable {
 
     private void getValues(Child child) {
         child.setIdChild(Integer.parseInt(txtIdChild.getText()));
-        child.setTimePlaying(Integer.parseInt(txtTimePlaying.getText()));
-        child.setTimeQuiet(Integer.parseInt(txtTimeQuiet.getText()));
+        child.setTimePlaying(Integer.parseInt(txtTimePlaying.getText()) * 1000);
+        child.setTimeQuiet(Integer.parseInt(txtTimeQuiet.getText()) * 1000);
         child.setBall(checkBoxBall.isSelected());
     }
 
     private void configureList() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("idChild"));
         ballColumn.setCellValueFactory(new PropertyValueFactory<>("ball"));
-        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("timePlaying"));
-        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("timeQuiet"));
+        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("auxTp"));
+        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("auxTq"));
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        configureList();
+        updateList();
+        balls.setText(String.valueOf(Basket.balls));
     }
 
     private void updateList() {
@@ -89,10 +96,4 @@ public class Controller implements Initializable {
         checkBoxBall.setSelected(false);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        configureList();
-        updateList();
-        balls.setText(String.valueOf(Basket.balls));
-    }
 }

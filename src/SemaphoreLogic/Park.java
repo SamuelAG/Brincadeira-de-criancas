@@ -23,11 +23,11 @@ import java.util.concurrent.Semaphore;
  * spaces.up()
  *
  * Producer solution
- * spaces.wait()
- * mutex.wait()
+ * spaces.down()
+ * mutex.down()
  * buffer.add(event)
- * mutex.signal()
- * items.signal()
+ * mutex.up()
+ * items.up()
  */
 
 public class Park {
@@ -47,8 +47,18 @@ public class Park {
         child.setSpaces(spaces);
         child.setItems(items);
         child.setMutex(mutex);
+        child.setAuxTp(child.getTimePlaying());
+        child.setAuxTq(child.getTimeQuiet());
         list.add(child);
         child.start();
+    }
+
+    public Semaphore getItems() {
+        return items;
+    }
+
+    public void setItems(Semaphore items) {
+        this.items = items;
     }
 
     public Semaphore getSpaces() {

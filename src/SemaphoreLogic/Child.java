@@ -11,6 +11,9 @@ public class Child extends Thread {
     private Semaphore items;
     private Semaphore mutex;
 
+    private int auxTp;
+    private int auxTq;
+
     public Child(){}
 
     public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore spaces, Semaphore items, Semaphore mutex) {
@@ -25,15 +28,26 @@ public class Child extends Thread {
 
     @Override
     public void run() {
-        System.out.println(idChild + " is starting");
-        if(ball)
-            putAball();
-        else
-            getAball();
-        play();
-        ball = !ball;
-        System.out.println("Thread: " + idChild + ". balls:" + Basket.balls);
-        super.run();
+        while(true) {
+            timeQuiet = 10;
+            timePlaying = 10;
+            //auxTq = timeQuiet;
+            //auxTp = timePlaying;
+            System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
+            if(ball) {
+                play();
+                putAball();
+                ball = false;
+                quiet();
+            } else {
+                getAball();
+                ball = true;
+            }
+            System.out.println("Thread: " + idChild + ". balls:" + Basket.balls);
+            super.run();
+        }
+
+        //super.run();
     }
 
     void getAball() {
@@ -44,7 +58,7 @@ public class Child extends Thread {
         }
 
         try {
-            System.out.println("Awaiting permission");
+            System.out.println("Awaiting permission to get a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -63,7 +77,7 @@ public class Child extends Thread {
             System.out.println("Interrupted");
         }
         try {
-            System.out.println("Awaiting permission");
+            System.out.println("Awaiting permission to put a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -74,16 +88,34 @@ public class Child extends Thread {
         items.release();
     }
 
-    private void play() {
-        for(int i = 0; i < timePlaying;) {
-            for(int j = 0; j < 5000; j++) {
+    private void quiet() {
+        auxTq = timeQuiet;
+        System.out.println(this.idChild + "  start quiet");
+        for(int i = 0; i < timeQuiet; timeQuiet--) {
+            for (int j = 0; j < 500000; j++) {
                 //System.out.println(j);
-                for(int k = 0; k < 1000; k++){}
+                for (int k = 0; k < 100000; k++) {
+                }
             }
-            System.out.println(idChild + " is playing " + timePlaying);
-            timePlaying--;
+            //System.out.println(idChild + " is quiet " + timeQuiet);
         }
+        System.out.println(this.idChild + "  stop quiet");
     }
+
+    private void play() {
+        auxTp = timePlaying;
+        System.out.println(this.idChild + "  start to play");
+        for(int i = 0; i < timePlaying; timePlaying--) {
+            for(int j = 0; j < 500000; j++) {
+                //System.out.println(j);
+                for(int k = 0; k < 100000; k++){}
+            }
+            //System.out.println(idChild + " is playing " + timePlaying);
+        }
+        System.out.println(this.idChild + "  stop play");
+    }
+
+
 
     public Semaphore getItems() {
         return items;
@@ -140,4 +172,28 @@ public class Child extends Thread {
     public void setTimeQuiet(int timeQuiet) {
         this.timeQuiet = timeQuiet;
     }
+
+    public int getAuxTp() {
+        return auxTp;
+    }
+
+    public void setAuxTp(int auxTp) {
+        this.auxTp = auxTp;
+    }
+
+    public int getAuxTq() {
+        return auxTq;
+    }
+
+    public void setAuxTq(int auxTq) {
+        this.auxTq = auxTq;
+    }
+
+    public static void main(String[] args) {
+        Park park = new Park(3);
+        Child c = new Child(1, true ,10, 10, park.getSpaces(), park.getItems(), park.getMutex());
+        park.getList().add(c);
+        park.getList().get(0).start();
+    }
+
 }
