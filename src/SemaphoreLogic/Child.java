@@ -7,19 +7,19 @@ public class Child extends Thread {
     private boolean ball;
     private int timePlaying;
     private int timeQuiet;
-    private Semaphore empty;
-    private Semaphore full;
+    private Semaphore spaces;
+    private Semaphore items;
     private Semaphore mutex;
 
     public Child(){}
 
-    public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore empty, Semaphore full, Semaphore mutex) {
+    public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore spaces, Semaphore items, Semaphore mutex) {
         this.idChild = idChild;
         this.ball = ball;
         this.timePlaying = timePlaying;
         this.timeQuiet = timeQuiet;
-        this.empty = empty;
-        this.full = full;
+        this.spaces = spaces;
+        this.items = items;
         this.mutex = mutex;
     }
 
@@ -30,14 +30,7 @@ public class Child extends Thread {
             putAball();
         else
             getAball();
-        for(int i = 0; i < timePlaying;) {
-            for(int j = 0; j < 5000; j++) {
-                //System.out.println(j);
-                for(int k = 0; k < 1000; k++){}
-            }
-            System.out.println(idChild + " is playing " + timePlaying);
-            timePlaying--;
-        }
+        play();
         ball = !ball;
         System.out.println("Thread: " + idChild + ". balls:" + Basket.balls);
         super.run();
@@ -45,7 +38,7 @@ public class Child extends Thread {
 
     void getAball() {
         try {
-            full.acquire();
+            items.acquire();
         } catch (InterruptedException e) {
             System.out.println("Interrupted");
         }
@@ -60,35 +53,44 @@ public class Child extends Thread {
         Basket.balls--;
         mutex.release();
         System.out.println("A child get a ball");
-        empty.release();
+        spaces.release();
     }
 
     void putAball() {
         try {
-            empty.acquire();
+            spaces.acquire();
         } catch (InterruptedException e) {
             System.out.println("Interrupted");
         }
-
         try {
             System.out.println("Awaiting permission");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         Basket.balls++;
         mutex.release();
         System.out.println("A child put a ball");
-        full.release();
+        items.release();
     }
 
-    public Semaphore getFull() {
-        return full;
+    private void play() {
+        for(int i = 0; i < timePlaying;) {
+            for(int j = 0; j < 5000; j++) {
+                //System.out.println(j);
+                for(int k = 0; k < 1000; k++){}
+            }
+            System.out.println(idChild + " is playing " + timePlaying);
+            timePlaying--;
+        }
     }
 
-    public void setFull(Semaphore full) {
-        this.full = full;
+    public Semaphore getItems() {
+        return items;
+    }
+
+    public void setItems(Semaphore items) {
+        this.items = items;
     }
 
     public Semaphore getMutex() {
@@ -99,12 +101,12 @@ public class Child extends Thread {
         this.mutex = mutex;
     }
 
-    public Semaphore getEmpty() {
-        return empty;
+    public Semaphore getSpaces() {
+        return spaces;
     }
 
-    public void setEmpty(Semaphore empty) {
-        this.empty = empty;
+    public void setSpaces(Semaphore spaces) {
+        this.spaces = spaces;
     }
 
     public int getIdChild() {
