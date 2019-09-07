@@ -59,6 +59,14 @@ public class Park {
         this.spaces = spaces;
     }
 
+    public Semaphore getItems() {
+        return items;
+    }
+
+    public void setItems(Semaphore items) {
+        this.items = items;
+    }
+
     public Semaphore getMutex() {
         return mutex;
     }

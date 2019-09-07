@@ -3,6 +3,8 @@ package sample;
 import SemaphoreLogic.Basket;
 import SemaphoreLogic.Child;
 import SemaphoreLogic.Park;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,13 +23,13 @@ public class Controller implements Initializable {
     private TableColumn<Child, String> idColumn;
 
     @FXML
-    private TableColumn<Child, String> ballColumn;
+    private TableColumn<Child, Boolean> ballColumn;
 
     @FXML
-    private TableColumn<Child, String> timePlayingColumn;
+    private TableColumn<Child, Integer> timePlayingColumn;
 
     @FXML
-    private TableColumn<Child, String> timeQuietColumn;
+    private TableColumn<Child, Integer> timeQuietColumn;
 
     @FXML
     private TextField txtIdChild;
@@ -78,16 +80,17 @@ public class Controller implements Initializable {
     }
 
     private void updateList() {
-        tblChildren.getItems().setAll(park.getList());
+        tblChildren.getItems().setAll(FXCollections.observableArrayList(park.getList()));
     }
 
     private void cleanFields() {
         txtIdChild.setText("");
         txtTimePlaying.setText("");
-        timePlayingColumn.setText("");
         txtTimeQuiet.setText("");
         checkBoxBall.setSelected(false);
     }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
