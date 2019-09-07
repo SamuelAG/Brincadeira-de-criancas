@@ -29,10 +29,8 @@ public class Child extends Thread {
     @Override
     public void run() {
         while(true) {
-            timeQuiet = 10;
-            timePlaying = 10;
-            //auxTq = timeQuiet;
-            //auxTp = timePlaying;
+            timeQuiet = 10000;
+            timePlaying = 10000;
             System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
             if(ball) {
                 play();
@@ -187,13 +185,6 @@ public class Child extends Thread {
 
     public void setAuxTq(int auxTq) {
         this.auxTq = auxTq;
-    }
-
-    public static void main(String[] args) {
-        Park park = new Park(3);
-        Child c = new Child(1, true ,10, 10, park.getSpaces(), park.getItems(), park.getMutex());
-        park.getList().add(c);
-        park.getList().get(0).start();
     }
 
 }

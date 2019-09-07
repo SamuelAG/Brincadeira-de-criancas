@@ -73,8 +73,8 @@ public class Controller implements Initializable {
     private void configureList() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("idChild"));
         ballColumn.setCellValueFactory(new PropertyValueFactory<>("ball"));
-        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("auxTp"));
-        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("auxTq"));
+        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("timePlaying"));
+        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("timeQuiet"));
     }
 
     @Override
@@ -91,7 +91,6 @@ public class Controller implements Initializable {
     private void cleanFields() {
         txtIdChild.setText("");
         txtTimePlaying.setText("");
-        timePlayingColumn.setText("");
         txtTimeQuiet.setText("");
         checkBoxBall.setSelected(false);
     }
