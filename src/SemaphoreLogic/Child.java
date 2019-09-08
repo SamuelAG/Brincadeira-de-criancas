@@ -29,8 +29,8 @@ public class Child extends Thread {
     @Override
     public void run() {
         while(true) {
-            timeQuiet = 10000;
-            timePlaying = 10000;
+            timeQuiet = 20;
+            timePlaying = 20;
             System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
             if(ball) {
                 play();
@@ -90,9 +90,10 @@ public class Child extends Thread {
         auxTq = timeQuiet;
         System.out.println(this.idChild + "  start quiet");
         for(int i = 0; i < timeQuiet; timeQuiet--) {
-            for (int j = 0; j < 500000; j++) {
-                //System.out.println(j);
+            for (int j = 0; j < 50000; j++) {
+                System.out.println(j);
                 for (int k = 0; k < 100000; k++) {
+                    int x = 100/100 + k - j + i;
                 }
             }
             //System.out.println(idChild + " is quiet " + timeQuiet);
@@ -104,9 +105,11 @@ public class Child extends Thread {
         auxTp = timePlaying;
         System.out.println(this.idChild + "  start to play");
         for(int i = 0; i < timePlaying; timePlaying--) {
-            for(int j = 0; j < 500000; j++) {
-                //System.out.println(j);
-                for(int k = 0; k < 100000; k++){}
+            for(int j = 0; j < 50000; j++) {
+                System.out.println(j);
+                for(int k = 0; k < 100000; k++) {
+                    int x = 100/100 + k - j + i;
+                }
             }
             //System.out.println(idChild + " is playing " + timePlaying);
         }

@@ -47,7 +47,7 @@ public class Controller implements Initializable {
     private Park park = new Park(3);
 
     @FXML
-    void addChild(ActionEvent event) throws IOException {
+    void addChild(ActionEvent event) {
         Child newChild = new Child();
         getValues(newChild);
         park.addChild(newChild);
@@ -56,7 +56,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void updateTableRealTime(ActionEvent event) throws IOException {
+    void updateTableRealTime(ActionEvent event) {
         updateList();
         System.out.println("Tamanho da lista: " + park.getList().size());
         System.out.println("BOLAS: " + Basket.balls);
@@ -65,8 +65,8 @@ public class Controller implements Initializable {
 
     private void getValues(Child child) {
         child.setIdChild(Integer.parseInt(txtIdChild.getText()));
-        child.setTimePlaying(Integer.parseInt(txtTimePlaying.getText()) * 1000);
-        child.setTimeQuiet(Integer.parseInt(txtTimeQuiet.getText()) * 1000);
+        child.setTimePlaying(Integer.parseInt(txtTimePlaying.getText()));
+        child.setTimeQuiet(Integer.parseInt(txtTimeQuiet.getText()));
         child.setBall(checkBoxBall.isSelected());
     }
 
