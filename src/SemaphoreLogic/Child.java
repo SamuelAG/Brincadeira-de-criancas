@@ -28,7 +28,7 @@ public class Child extends Thread {
     public void run() {
         while(true) {
             timeQuietCounter = timeQuiet;
-            timePlayingCounter = timePlayingCounter;
+            timePlayingCounter = timePlaying;
             System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
             if(ball) {
                 play();

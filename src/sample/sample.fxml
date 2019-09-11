@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="603.0" prefWidth="1033.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="603.0" prefWidth="1033.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <TableView fx:id="tblChildren" layoutX="14.0" layoutY="118.0" prefHeight="200.0" prefWidth="590.0">
       <columns>
           <TableColumn fx:id="idColumn" prefWidth="96.0" text="ID" />
@@ -20,7 +21,7 @@
           <TableColumn fx:id="timeQuietColumn" prefWidth="197.0" text="Tempo quieta" />
       </columns>
     </TableView>
-    <HBox layoutX="2.0" layoutY="464.0" prefHeight="74.0" prefWidth="641.0">
+    <HBox layoutX="-3.0" layoutY="411.0" prefHeight="74.0" prefWidth="641.0">
         <TextField fx:id="txtIdChild" prefHeight="25.0" prefWidth="149.0" promptText="ID da criança">
             <HBox.margin>
                 <Insets left="10.0" right="10.0" top="20.0" />
@@ -42,9 +43,12 @@
             </HBox.margin>
         </TextField>
     </HBox>
-    <Button layoutX="27.0" layoutY="554.0" mnemonicParsing="false" onAction="#addChild" text="Nova Criança" />
-   <Button layoutX="183.0" layoutY="554.0" mnemonicParsing="false" onAction="#updateTableRealTime" text="update" />
-   <Label fx:id="balls" layoutX="334.0" layoutY="85.0" prefHeight="16.0" prefWidth="14.0" />
-   <Label layoutX="234.0" layoutY="85.0" text="Bolas no cesto:" />
-   <VBox fx:id="childsBox" layoutX="626.0" layoutY="69.0" prefHeight="423.0" prefWidth="398.0" />
+    <Button layoutX="110.0" layoutY="514.0" mnemonicParsing="false" onAction="#addChild" text="Nova Criança" />
+   <Button layoutX="317.0" layoutY="514.0" mnemonicParsing="false" onAction="#updateTableRealTime" text="update" />
+   <Label fx:id="balls" layoutX="342.0" layoutY="84.0" prefHeight="16.0" prefWidth="14.0" style="-fx-text-fill: black;">
+      <font>
+         <Font size="15.0" />
+      </font></Label>
+   <Label layoutX="234.0" layoutY="85.0" style="-fx-text-fill: black;" text="Bolas no cesto:" />
+   <VBox fx:id="childsBox" layoutX="626.0" layoutY="69.0" prefHeight="423.0" prefWidth="398.0" style="-fx-background-color: white;" />
 </AnchorPane>
