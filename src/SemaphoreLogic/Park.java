@@ -47,8 +47,8 @@ public class Park {
         child.setSpaces(spaces);
         child.setItems(items);
         child.setMutex(mutex);
-        child.setAuxTp(child.getTimePlaying());
-        child.setAuxTq(child.getTimeQuiet());
+        child.setTimePlayingCounter(child.getTimePlaying());
+        child.setTimeQuietCounter(child.getTimeQuiet());
         list.add(child);
         child.start();
     }

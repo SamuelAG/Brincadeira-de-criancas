@@ -7,13 +7,11 @@ public class Child extends Thread {
     private boolean ball;
     private int timePlaying;
     private int timeQuiet;
+    private int timePlayingCounter;
+    private int timeQuietCounter;
     private Semaphore spaces;
     private Semaphore items;
     private Semaphore mutex;
-
-    private int auxTp;
-    private int auxTq;
-
     public Child(){}
 
     public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore spaces, Semaphore items, Semaphore mutex) {
@@ -29,8 +27,8 @@ public class Child extends Thread {
     @Override
     public void run() {
         while(true) {
-            timeQuiet = 20;
-            timePlaying = 20;
+            timeQuietCounter = timeQuiet;
+            timePlayingCounter = timePlayingCounter;
             System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
             if(ball) {
                 play();
@@ -87,9 +85,9 @@ public class Child extends Thread {
     }
 
     private void quiet() {
-        auxTq = timeQuiet;
+
         System.out.println(this.idChild + "  start quiet");
-        for(int i = 0; i < timeQuiet; timeQuiet--) {
+        for(int i = 0; i < timeQuietCounter; timeQuietCounter--) {
             for (int j = 0; j < 50000; j++) {
                 System.out.println(j);
                 for (int k = 0; k < 100000; k++) {
@@ -102,9 +100,9 @@ public class Child extends Thread {
     }
 
     private void play() {
-        auxTp = timePlaying;
+
         System.out.println(this.idChild + "  start to play");
-        for(int i = 0; i < timePlaying; timePlaying--) {
+        for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
             for(int j = 0; j < 50000; j++) {
                 System.out.println(j);
                 for(int k = 0; k < 100000; k++) {
@@ -116,7 +114,21 @@ public class Child extends Thread {
         System.out.println(this.idChild + "  stop play");
     }
 
+    public int getTimePlayingCounter() {
+        return timePlayingCounter;
+    }
 
+    public void setTimePlayingCounter(int timePlayingCounter) {
+        this.timePlayingCounter = timePlayingCounter;
+    }
+
+    public int getTimeQuietCounter() {
+        return timeQuietCounter;
+    }
+
+    public void setTimeQuietCounter(int timeQuietCounter) {
+        this.timeQuietCounter = timeQuietCounter;
+    }
 
     public Semaphore getItems() {
         return items;
@@ -173,21 +185,4 @@ public class Child extends Thread {
     public void setTimeQuiet(int timeQuiet) {
         this.timeQuiet = timeQuiet;
     }
-
-    public int getAuxTp() {
-        return auxTp;
-    }
-
-    public void setAuxTp(int auxTp) {
-        this.auxTp = auxTp;
-    }
-
-    public int getAuxTq() {
-        return auxTq;
-    }
-
-    public void setAuxTq(int auxTq) {
-        this.auxTq = auxTq;
-    }
-
 }

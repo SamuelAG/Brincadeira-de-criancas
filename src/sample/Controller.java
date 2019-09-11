@@ -3,11 +3,23 @@ package sample;
 import SemaphoreLogic.Basket;
 import SemaphoreLogic.Child;
 import SemaphoreLogic.Park;
+import javafx.animation.Animation;
+import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -44,6 +56,9 @@ public class Controller implements Initializable {
     @FXML
     private Label balls;
 
+    @FXML
+    private VBox childsBox;
+
     private Park park = new Park(3);
 
     @FXML
@@ -51,6 +66,9 @@ public class Controller implements Initializable {
         Child newChild = new Child();
         getValues(newChild);
         park.addChild(newChild);
+        Circle circle = new Circle(40, Color.BLUE);
+        childsBox.getChildren().add(circle);
+        pathTransition(circle, newChild.getTimePlaying(), newChild.getTimeQuiet());
         cleanFields();
         updateList();
     }
@@ -73,8 +91,19 @@ public class Controller implements Initializable {
     private void configureList() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("idChild"));
         ballColumn.setCellValueFactory(new PropertyValueFactory<>("ball"));
-        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("timePlaying"));
-        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("timeQuiet"));
+        timePlayingColumn.setCellValueFactory(new PropertyValueFactory<>("timePlayingCounter"));
+        timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("timeQuietCounter"));
+    }
+
+    private void pathTransition(Circle circle, int timePlaying, int timeQuiet) {
+        Path path = new Path();
+        path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
+        path.setFill(null);
+
+        PathTransition pt = new PathTransition(Duration.millis(timePlaying * 100), path, circle);
+        pt.setCycleCount(Animation.INDEFINITE);
+        pt.setAutoReverse(true);
+        pt.play();
     }
 
     @Override
