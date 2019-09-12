@@ -76,7 +76,6 @@ public class Controller implements Initializable {
             image.setImage(new Image(new FileInputStream("/home/samuel-alves/Documentos/Brincadeira-de-criancas/src/resources/frente.png")));
             image.setFitHeight(70);
             image.setFitWidth(70);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -153,6 +152,16 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Thread update = new Thread(() -> {
+            while (true) {
+                //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                for(int i = 0; i < park.getList().size(); i++) {
+
+                    System.out.println(park.getList().get(i).getId());
+                }
+            }
+        });
+        update.start();
         configureList();
         updateList();
         balls.setText(String.valueOf(Basket.balls));

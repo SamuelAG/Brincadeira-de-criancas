@@ -1,5 +1,6 @@
 package SemaphoreLogic;
 
+import java.util.Date;
 import java.util.concurrent.Semaphore;
 
 public class Child extends Thread {
@@ -31,10 +32,12 @@ public class Child extends Thread {
             timePlayingCounter = timePlaying;
             System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
             if(ball) {
+                //MySleep();
                 play();
                 putAball();
                 ball = false;
                 quiet();
+                //MySleep();
             } else {
                 getAball();
                 ball = true;
@@ -54,15 +57,15 @@ public class Child extends Thread {
         }
 
         try {
-            System.out.println("Awaiting permission to get a ball");
+            //System.out.println("Awaiting permission to get a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("gets permission");
+        //System.out.println("gets permission");
         Basket.balls--;
         mutex.release();
-        System.out.println("A child get a ball");
+        //System.out.println("A child get a ball");
         spaces.release();
     }
 
@@ -73,19 +76,18 @@ public class Child extends Thread {
             System.out.println("Interrupted");
         }
         try {
-            System.out.println("Awaiting permission to put a ball");
+            //System.out.println("Awaiting permission to put a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Basket.balls++;
         mutex.release();
-        System.out.println("A child put a ball");
+        //System.out.println("A child put a ball");
         items.release();
     }
 
     private void quiet() {
-
         System.out.println(this.idChild + "  start quiet");
         for(int i = 0; i < timeQuietCounter; timeQuietCounter--) {
             for (int j = 0; j < 50000; j++) {
@@ -100,7 +102,6 @@ public class Child extends Thread {
     }
 
     private void play() {
-
         System.out.println(this.idChild + "  start to play");
         for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
             for(int j = 0; j < 50000; j++) {
@@ -112,6 +113,23 @@ public class Child extends Thread {
             //System.out.println(idChild + " is playing " + timePlaying);
         }
         System.out.println(this.idChild + "  stop play");
+    }
+
+    void MySleep() {
+        Date date = new Date();
+        int seconds = date.getSeconds() + timePlaying;
+        while(seconds > date.getSeconds()) {
+            System.out.println("LOOOOP");
+            for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
+                for(int j = 0; j < 50000; j++) {
+                    //System.out.println(j);
+                    for(int k = 0; k < 100000; k++) {
+                        int x = 100/100 + k - j + i;
+                    }
+                }
+                //System.out.println(idChild + " is playing " + timePlaying);
+            }
+        }
     }
 
     public int getTimePlayingCounter() {
