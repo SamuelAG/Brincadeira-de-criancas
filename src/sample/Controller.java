@@ -13,17 +13,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.HLineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,8 +62,17 @@ public class Controller implements Initializable {
 
     @FXML
     void addChild(ActionEvent event) throws MalformedURLException {
+        // Instancia uma nova criança, newChild
+        Child newChild = new Child();
+        // Pega os valores dos campos de texto e passa para dentro do objeto newChild
+        getValues(newChild);
+        // Adiciona na lista de crianças
+        park.addChild(newChild);
+
+        // Cria uma nova imagem
         ImageView image = new ImageView();
         try {
+            // Pega a imagem no diretorio e seta a altura e largura
             image.setImage(new Image(new FileInputStream("/home/samuel-alves/Documentos/Brincadeira-de-criancas/src/resources/frente.png")));
             image.setFitHeight(70);
             image.setFitWidth(70);
@@ -76,15 +80,42 @@ public class Controller implements Initializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Child newChild = new Child();
-        getValues(newChild);
-        park.addChild(newChild);
-        Circle circle = new Circle(40, Color.BLUE);
-        //childsBox.getChildren().add(circle);
+
+        // Adiciona a nova imagem na Vertical Box
         childsBox.getChildren().add(image);
+        // Chama a função que realiza a animação
         pathTransition(image, newChild.getTimePlaying(), newChild.getTimeQuiet());
+        // Limpa os campos de texto
         cleanFields();
+        // Atualiza a lista
         updateList();
+    }
+
+    @FXML
+    void removeChild(ActionEvent event) {
+        // Remove a animação da thread
+        childsBox.getChildren().remove(park.getList().indexOf(tblChildren.getSelectionModel().getSelectedItem()));
+        // Para a execução da thread
+        tblChildren.getSelectionModel().getSelectedItem().stop();
+        // Remove a thread da lista
+        park.getList().remove(tblChildren.getSelectionModel().getSelectedItem());
+        // Atualiza a lista
+        updateList();
+    }
+
+    private void pathTransition(ImageView image, int timePlaying, int timeQuiet) {
+        // Instancia um novo caminho
+        Path path = new Path();
+        // Adiciona elemento a esse caminho
+        path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
+        // Não sei o que faz quando eu copiei já tava ai
+        path.setFill(null);
+
+        // Cria um novo PathTransition passando como parametro a duração, caminho e um elemento (Nesse caso a imagem)
+        PathTransition pt = new PathTransition(Duration.millis(timePlaying * 100), path, image);
+        pt.setCycleCount(Animation.INDEFINITE);
+        pt.setAutoReverse(true);
+        pt.play();
     }
 
     @FXML
@@ -109,24 +140,6 @@ public class Controller implements Initializable {
         timeQuietColumn.setCellValueFactory(new PropertyValueFactory<>("timeQuietCounter"));
     }
 
-    private void pathTransition(ImageView image, int timePlaying, int timeQuiet) {
-        Path path = new Path();
-        path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
-        path.setFill(null);
-
-        PathTransition pt = new PathTransition(Duration.millis(timePlaying * 100), path, image);
-        pt.setCycleCount(Animation.INDEFINITE);
-        pt.setAutoReverse(true);
-        pt.play();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        configureList();
-        updateList();
-        balls.setText(String.valueOf(Basket.balls));
-    }
-
     private void updateList() {
         tblChildren.getItems().setAll(park.getList());
     }
@@ -136,6 +149,13 @@ public class Controller implements Initializable {
         txtTimePlaying.setText("");
         txtTimeQuiet.setText("");
         checkBoxBall.setSelected(false);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        configureList();
+        updateList();
+        balls.setText(String.valueOf(Basket.balls));
     }
 
 }

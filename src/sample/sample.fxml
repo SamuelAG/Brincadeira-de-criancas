@@ -44,11 +44,12 @@
         </TextField>
     </HBox>
     <Button layoutX="110.0" layoutY="514.0" mnemonicParsing="false" onAction="#addChild" text="Nova Criança" />
-   <Button layoutX="317.0" layoutY="514.0" mnemonicParsing="false" onAction="#updateTableRealTime" text="update" />
+   <Button layoutX="384.0" layoutY="514.0" mnemonicParsing="false" onAction="#updateTableRealTime" text="update" />
    <Label fx:id="balls" layoutX="342.0" layoutY="84.0" prefHeight="16.0" prefWidth="14.0" style="-fx-text-fill: black;">
       <font>
          <Font size="15.0" />
       </font></Label>
    <Label layoutX="234.0" layoutY="85.0" style="-fx-text-fill: black;" text="Bolas no cesto:" />
    <VBox fx:id="childsBox" layoutX="626.0" layoutY="69.0" prefHeight="423.0" prefWidth="398.0" style="-fx-background-color: white;" />
+   <Button layoutX="234.0" layoutY="514.0" mnemonicParsing="false" onAction="#removeChild" text="Remover Criança" />
 </AnchorPane>
