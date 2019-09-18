@@ -13,6 +13,8 @@ public class Child extends Thread {
     private Semaphore spaces;
     private Semaphore items;
     private Semaphore mutex;
+    private CallBack callBack;
+
     public Child(){}
 
     public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore spaces, Semaphore items, Semaphore mutex) {
@@ -23,6 +25,10 @@ public class Child extends Thread {
         this.spaces = spaces;
         this.items = items;
         this.mutex = mutex;
+    }
+
+    public void register(CallBack callBack) {
+        callBack.methodToCallBack();
     }
 
     @Override
@@ -97,6 +103,7 @@ public class Child extends Thread {
                 }
             }
             //System.out.println(idChild + " is quiet " + timeQuiet);
+            callBack.methodToCallBack();
         }
         System.out.println(this.idChild + "  stop quiet");
     }
@@ -111,6 +118,7 @@ public class Child extends Thread {
                 }
             }
             //System.out.println(idChild + " is playing " + timePlaying);
+            callBack.methodToCallBack();
         }
         System.out.println(this.idChild + "  stop play");
     }
@@ -130,6 +138,14 @@ public class Child extends Thread {
                 //System.out.println(idChild + " is playing " + timePlaying);
             }
         }
+    }
+
+    public CallBack getCallBack() {
+        return callBack;
+    }
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
     }
 
     public int getTimePlayingCounter() {
