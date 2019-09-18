@@ -1,6 +1,7 @@
 package sample;
 
 import SemaphoreLogic.Basket;
+import SemaphoreLogic.CallBack;
 import SemaphoreLogic.Child;
 import SemaphoreLogic.Park;
 import javafx.animation.Animation;
@@ -64,8 +65,13 @@ public class Controller implements Initializable {
     void addChild(ActionEvent event) throws MalformedURLException {
         // Instancia uma nova criança, newChild
         Child newChild = new Child();
+        CallBack callBack = () -> {
+            updateList();
+            balls.setText(String.valueOf(Basket.balls));
+        };
         // Pega os valores dos campos de texto e passa para dentro do objeto newChild
         getValues(newChild);
+        newChild.setCallBack(callBack);
         // Adiciona na lista de crianças
         park.addChild(newChild);
 
@@ -73,7 +79,7 @@ public class Controller implements Initializable {
         ImageView image = new ImageView();
         try {
             // Pega a imagem no diretorio e seta a altura e largura
-            image.setImage(new Image(new FileInputStream("/home/samuel-alves/Documentos/Brincadeira-de-criancas/src/resources/frente.png")));
+            image.setImage(new Image(new FileInputStream("C:\\Users\\Alunos\\Desktop\\Brincadeira-de-criancas-master\\src\\resources\\frente.png")));
             image.setFitHeight(70);
             image.setFitWidth(70);
         } catch (FileNotFoundException e) {
@@ -112,7 +118,7 @@ public class Controller implements Initializable {
 
         // Cria um novo PathTransition passando como parametro a duração, caminho e um elemento (Nesse caso a imagem)
         PathTransition pt = new PathTransition(Duration.millis(timePlaying * 100), path, image);
-        pt.setCycleCount(Animation.INDEFINITE);
+        pt.setCycleCount(2);
         pt.setAutoReverse(true);
         pt.play();
     }
