@@ -27,23 +27,17 @@ public class Child extends Thread {
         this.mutex = mutex;
     }
 
-    public void register(CallBack callBack) {
-        callBack.methodToCallBack();
-    }
-
     @Override
     public void run() {
         while(true) {
             timeQuietCounter = timeQuiet;
             timePlayingCounter = timePlaying;
-            System.out.println(idChild + " is starting, timePlaying: " + timePlaying + ", timeQuiet: " + timeQuiet);
+
             if(ball) {
-                //MySleep();
                 play();
                 putAball();
                 ball = false;
                 quiet();
-                //MySleep();
             } else {
                 getAball();
                 ball = true;
@@ -70,6 +64,8 @@ public class Child extends Thread {
         }
         //System.out.println("gets permission");
         Basket.balls--;
+        callBack.addToLog(this.idChild + "  pegou uma bola do cesto!\nBolas no cesto: " + Basket.balls + "\n");
+        callBack.updateBalls();
         mutex.release();
         //System.out.println("A child get a ball");
         spaces.release();
@@ -88,13 +84,15 @@ public class Child extends Thread {
             e.printStackTrace();
         }
         Basket.balls++;
+        callBack.addToLog(this.idChild + "  colocou uma bola no cesto!\nBolas no cesto: " + Basket.balls + "\n");
+        callBack.updateBalls();
         mutex.release();
         //System.out.println("A child put a ball");
         items.release();
     }
 
     private void quiet() {
-        System.out.println(this.idChild + "  start quiet");
+        callBack.addToLog(this.idChild + "  está quieta\n");
         for(int i = 0; i < timeQuietCounter; timeQuietCounter--) {
             for (int j = 0; j < 50000; j++) {
                 System.out.println(j);
@@ -105,11 +103,12 @@ public class Child extends Thread {
             //System.out.println(idChild + " is quiet " + timeQuiet);
             callBack.methodToCallBack();
         }
-        System.out.println(this.idChild + "  stop quiet");
+        callBack.addToLog(this.idChild + "  não está mais quieta!\n");
     }
 
     private void play() {
-        System.out.println(this.idChild + "  start to play");
+
+        callBack.addToLog(this.idChild + "  está brincando!\n");
         for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
             for(int j = 0; j < 50000; j++) {
                 System.out.println(j);
@@ -120,24 +119,7 @@ public class Child extends Thread {
             //System.out.println(idChild + " is playing " + timePlaying);
             callBack.methodToCallBack();
         }
-        System.out.println(this.idChild + "  stop play");
-    }
-
-    void MySleep() {
-        Date date = new Date();
-        int seconds = date.getSeconds() + timePlaying;
-        while(seconds > date.getSeconds()) {
-            System.out.println("LOOOOP");
-            for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
-                for(int j = 0; j < 50000; j++) {
-                    //System.out.println(j);
-                    for(int k = 0; k < 100000; k++) {
-                        int x = 100/100 + k - j + i;
-                    }
-                }
-                //System.out.println(idChild + " is playing " + timePlaying);
-            }
-        }
+        callBack.addToLog(this.idChild + "  terminou de brincar :(\n");
     }
 
     public CallBack getCallBack() {

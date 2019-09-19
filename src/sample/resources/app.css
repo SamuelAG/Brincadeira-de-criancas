@@ -1,3 +1,4 @@
 .box {
     -fx-background-color: white;
+    -fx-background-image: url("park.png");
 }

@@ -9,14 +9,14 @@ import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.HLineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,18 +57,41 @@ public class Controller implements Initializable {
     private Label balls;
 
     @FXML
-    private VBox childsBox;
+    private HBox childsBox;
+
+    @FXML
+    private TextArea log;
+    private StringBuilder buffer;
+
+    @FXML
+    private ImageView basket;
+    private String[] images = new String[11];
 
     private Park park = new Park(3);
 
     @FXML
-    void addChild(ActionEvent event) throws MalformedURLException {
+    void addChild(ActionEvent event) {
         // Instancia uma nova criança, newChild
         Child newChild = new Child();
-        CallBack callBack = () -> {
-            updateList();
-            balls.setText(String.valueOf(Basket.balls));
+        CallBack callBack = new CallBack() {
+            @Override
+            public void methodToCallBack() {
+                updateList();
+            }
+
+            @Override
+            public void addToLog(String message) {
+                buffer.append(message);
+                log.setText(buffer.toString());
+                log.positionCaret(log.getLength());
+            }
+
+            @Override
+            public void updateBalls() {
+                updateBall();
+            }
         };
+
         // Pega os valores dos campos de texto e passa para dentro do objeto newChild
         getValues(newChild);
         newChild.setCallBack(callBack);
@@ -79,7 +102,7 @@ public class Controller implements Initializable {
         ImageView image = new ImageView();
         try {
             // Pega a imagem no diretorio e seta a altura e largura
-            image.setImage(new Image(new FileInputStream("C:\\Users\\Alunos\\Desktop\\Brincadeira-de-criancas-master\\src\\resources\\frente.png")));
+            image.setImage(new Image(new FileInputStream("/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/block.jpeg")));
             image.setFitHeight(70);
             image.setFitWidth(70);
         } catch (FileNotFoundException e) {
@@ -94,6 +117,10 @@ public class Controller implements Initializable {
         cleanFields();
         // Atualiza a lista
         updateList();
+    }
+
+    private void updateBall() {
+        balls.setText(String.valueOf(Basket.balls));
     }
 
     @FXML
@@ -112,20 +139,19 @@ public class Controller implements Initializable {
         // Instancia um novo caminho
         Path path = new Path();
         // Adiciona elemento a esse caminho
-        path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
+        path.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 260));
         // Não sei o que faz quando eu copiei já tava ai
-        path.setFill(null);
+        //path.setFill(null);
 
         // Cria um novo PathTransition passando como parametro a duração, caminho e um elemento (Nesse caso a imagem)
-        PathTransition pt = new PathTransition(Duration.millis(timePlaying * 100), path, image);
-        pt.setCycleCount(2);
+        PathTransition pt = new PathTransition(Duration.millis(1000), path, image);
+        pt.setCycleCount(Animation.INDEFINITE);
         pt.setAutoReverse(true);
         pt.play();
     }
 
     @FXML
-    void updateTableRealTime(ActionEvent event) {
-        updateList();
+    void updateTableRealTime() {
         System.out.println("Tamanho da lista: " + park.getList().size());
         System.out.println("BOLAS: " + Basket.balls);
         balls.setText(String.valueOf(Basket.balls));
@@ -158,16 +184,16 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Thread update = new Thread(() -> {
-            while (true) {
-                //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                for(int i = 0; i < park.getList().size(); i++) {
-
-                    System.out.println(park.getList().get(i).getId());
-                }
-            }
-        });
-        update.start();
+        for(int i = 0; i < 11; i++) {
+            images[0] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/block.jpeg";
+        }
+        try {
+            basket.setImage(new Image(new FileInputStream(images[Basket.balls])));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        buffer = new StringBuilder();
+        log.setText(buffer.toString());
         configureList();
         updateList();
         balls.setText(String.valueOf(Basket.balls));
