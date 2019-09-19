@@ -25,12 +25,7 @@
           <TableColumn fx:id="timeQuietColumn" prefWidth="114.0" text="Tempo quieta" />
       </columns>
     </TableView>
-   <Label fx:id="balls" layoutX="395.0" layoutY="423.0" prefHeight="16.0" prefWidth="14.0" style="-fx-text-fill: black;">
-      <font>
-         <Font size="15.0" />
-      </font></Label>
-   <Label layoutX="273.0" layoutY="424.0" style="-fx-text-fill: black;" text="Bolas no cesto:" />
-   <HBox fx:id="childsBox" layoutX="19.0" layoutY="84.0" prefHeight="332.0" prefWidth="1228.0" styleClass="box" />
+   <HBox fx:id="childsBox" layoutX="19.0" layoutY="84.0" prefHeight="332.0" prefWidth="1228.0" spacing="75.0" styleClass="box" />
    <Pane layoutY="-12.0" prefHeight="74.0" prefWidth="1263.0" style="-fx-background-color: #48D1CC;">
       <children>
          <Label layoutX="377.0" layoutY="14.0" style="-fx-background-color: #48D1CC;" text="Brincadeira de Crianças" textFill="WHITE">
@@ -72,7 +67,7 @@
       </opaqueInsets>
    </VBox>
    <TextArea fx:id="log" layoutX="221.0" layoutY="453.0" prefHeight="127.0" prefWidth="318.0" />
-   <ImageView fx:id="basket" fitHeight="150.0" fitWidth="200.0" layoutX="550.0" layoutY="442.0" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="basket" fitHeight="145.0" fitWidth="192.0" layoutX="556.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true" />
     <stylesheets>
         <URL value="@resources/app.css" />
     </stylesheets>

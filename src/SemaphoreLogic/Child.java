@@ -1,6 +1,8 @@
 package SemaphoreLogic;
 
-import java.util.Date;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.util.concurrent.Semaphore;
 
 public class Child extends Thread {
@@ -14,6 +16,7 @@ public class Child extends Thread {
     private Semaphore items;
     private Semaphore mutex;
     private CallBack callBack;
+    private ChildState childState;
 
     public Child(){}
 
@@ -32,67 +35,96 @@ public class Child extends Thread {
         while(true) {
             timeQuietCounter = timeQuiet;
             timePlayingCounter = timePlaying;
-
             if(ball) {
-                play();
+                cpuBound(timePlayingCounter);
                 putAball();
                 ball = false;
-                quiet();
+                callBack.quiet(this);
+                cpuBound(timeQuietCounter);
             } else {
                 getAball();
+                callBack.playing(this);
                 ball = true;
             }
-            System.out.println("Thread: " + idChild + ". balls:" + Basket.balls);
             super.run();
         }
-
-        //super.run();
     }
 
     void getAball() {
+        if(items.availablePermits() == 0) {
+            callBack.addToLog("O cesto está sem bola! " + idChild + " Bloqueada!\n");
+            callBack.blockNoBall(this);
+        }
         try {
             items.acquire();
         } catch (InterruptedException e) {
-            System.out.println("Interrupted");
+            e.printStackTrace();
         }
-
         try {
-            //System.out.println("Awaiting permission to get a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //System.out.println("gets permission");
         Basket.balls--;
-        callBack.addToLog(this.idChild + "  pegou uma bola do cesto!\nBolas no cesto: " + Basket.balls + "\n");
-        callBack.updateBalls();
+        callBack.getABall();
         mutex.release();
-        //System.out.println("A child get a ball");
         spaces.release();
+        callBack.addToLog(this.idChild + "  pegou uma bola do cesto!\nBolas no cesto: " + Basket.balls + "\n");
     }
 
     void putAball() {
+        if (spaces.availablePermits() == 0) {
+            callBack.addToLog("O cesto está cheio! " + idChild + " Bloqueada!\n");
+            callBack.blockFullBasket(this);
+        }
         try {
             spaces.acquire();
         } catch (InterruptedException e) {
-            System.out.println("Interrupted");
+            e.printStackTrace();
         }
         try {
-            //System.out.println("Awaiting permission to put a ball");
             mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Basket.balls++;
-        callBack.addToLog(this.idChild + "  colocou uma bola no cesto!\nBolas no cesto: " + Basket.balls + "\n");
-        callBack.updateBalls();
+        callBack.putABall();
         mutex.release();
-        //System.out.println("A child put a ball");
         items.release();
+        callBack.addToLog(this.idChild + "  colocou uma bola no cesto!\nBolas no cesto: " + Basket.balls + "\n");
+
+    }
+
+    public void cpuBound(long tempo) {
+        if(ball) callBack.addToLog(this.idChild + "  está brincando!\n");
+        else callBack.addToLog(this.idChild + "  está quieta\n");
+
+        long tempoAtual = System.currentTimeMillis();
+        long tempoDecorrido = 0, milisegundos = 0;
+        while (tempoDecorrido < tempo) {
+            milisegundos = (System.currentTimeMillis() - tempoAtual);
+            if( (milisegundos / 1000) > tempoDecorrido) {
+                if(ball) timePlayingCounter--;
+                else timeQuietCounter--;
+                callBack.methodToCallBack();
+            }
+            if(ball && timePlayingCounter == 0) {
+                timePlayingCounter = timePlaying;
+                break;
+            }
+            if(ball && timeQuietCounter == 0) {
+                timeQuietCounter = timeQuiet;
+                break;
+            }
+            tempoDecorrido = milisegundos / 1000;
+        }
+
+        if(ball) callBack.addToLog(this.idChild + "  terminou de brincar :(\n");
+        else callBack.addToLog(this.idChild + "  não está mais quieta!\n");
     }
 
     private void quiet() {
-        callBack.addToLog(this.idChild + "  está quieta\n");
+        //callBack.addToLog(this.idChild + "  está quieta\n");
         for(int i = 0; i < timeQuietCounter; timeQuietCounter--) {
             for (int j = 0; j < 50000; j++) {
                 System.out.println(j);
@@ -103,12 +135,11 @@ public class Child extends Thread {
             //System.out.println(idChild + " is quiet " + timeQuiet);
             callBack.methodToCallBack();
         }
-        callBack.addToLog(this.idChild + "  não está mais quieta!\n");
+        //callBack.addToLog(this.idChild + "  não está mais quieta!\n");
     }
 
     private void play() {
-
-        callBack.addToLog(this.idChild + "  está brincando!\n");
+        //callBack.addToLog(this.idChild + "  está brincando!\n");
         for(int i = 0; i < timePlayingCounter; timePlayingCounter--) {
             for(int j = 0; j < 50000; j++) {
                 System.out.println(j);
@@ -119,7 +150,15 @@ public class Child extends Thread {
             //System.out.println(idChild + " is playing " + timePlaying);
             callBack.methodToCallBack();
         }
-        callBack.addToLog(this.idChild + "  terminou de brincar :(\n");
+        //callBack.addToLog(this.idChild + "  terminou de brincar :(\n");
+    }
+
+    public ChildState getChildState() {
+        return childState;
+    }
+
+    public void setChildState(ChildState childState) {
+        this.childState = childState;
     }
 
     public CallBack getCallBack() {

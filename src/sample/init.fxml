@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="336.0" prefWidth="483.0" style="-fx-background-color: #E9967A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.InitController">
+   <children>
+      <Label layoutX="65.0" layoutY="14.0" text="Brincadeira de Criança">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtMaxBalls" layoutX="155.0" layoutY="232.0" prefHeight="26.0" prefWidth="184.0" promptText="Número máximo de bolas" style="-fx-border-color: #48D1CC;" />
+      <Label layoutX="78.0" layoutY="170.0" text="Qual o número máximo de bolas no cesto?">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="110.0" fitWidth="483.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@resources/park.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="button" layoutX="216.0" layoutY="298.0" mnemonicParsing="false" onAction="#onClick" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #48D1CC; -fx-border-color: white;" text="Ok" />
+      <ImageView fitHeight="91.0" fitWidth="130.0" layoutX="380.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@resources/child/playing_1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="91.0" fitWidth="115.0" layoutX="31.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@resources/basket/basket_5.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
