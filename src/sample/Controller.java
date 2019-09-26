@@ -94,11 +94,7 @@ public class Controller implements Initializable {
             public void putABall() {
                 Platform.runLater(() -> {
                     count++;
-                    try {
-                        basket.setImage(new Image(new FileInputStream(images[count])));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    basket.setImage(new Image(images[count]));
                 });
 
             }
@@ -107,11 +103,7 @@ public class Controller implements Initializable {
             public void getABall() {
                 Platform.runLater(() -> {
                     count--;
-                    try {
-                        basket.setImage(new Image(new FileInputStream(images[count])));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    basket.setImage(new Image(images[count]));
                 });
             }
 
@@ -145,16 +137,12 @@ public class Controller implements Initializable {
 
         // Cria uma nova imagem
         ImageView image = new ImageView();
-        try {
-            // Pega a imagem no diretorio e seta a altura e largura
-            image.setImage(new Image(new FileInputStream(newChild.isBall() ?
-                    "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\playing_1.png" :
-                    "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png")));
-            image.setFitHeight(70);
-            image.setFitWidth(70);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        // Pega a imagem no diretorio e seta a altura e largura
+        image.setImage(new Image(newChild.isBall() ? "sample/resources/child/playing_1.png" : "sample/resources/child/block.png"));
+        image.setFitHeight(70);
+        image.setFitWidth(70);
+
 
         // Adiciona a nova imagem na Vertical Box
         childsBox.getChildren().add(image);
@@ -171,23 +159,21 @@ public class Controller implements Initializable {
             int index = park.getList().indexOf(child);
             childsBox.getChildren().remove(index);
             ImageView image = new ImageView();
-            try {
-                String imageURL = "";
-                if(path == playingPath) {
-                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\playing_1.png";
-                } else if(path == quietPath) {
-                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png";
-                } else if(path == blockNoBallPath) {
-                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png";
-                } else if(path == blockBasketFullPath) {
-                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\blockBasketFull.png";
-                }
-                image.setImage(new Image(new FileInputStream(imageURL)));
-                image.setFitHeight(70);
-                image.setFitWidth(70);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+
+            String imageURL = "";
+            if(path == playingPath) {
+                imageURL = "sample/resources/child/playing_1.png";
+            } else if(path == quietPath) {
+                imageURL = "sample/resources/child/block.png";
+            } else if(path == blockNoBallPath) {
+                imageURL = "sample/resources/child/block.png";
+            } else if(path == blockBasketFullPath) {
+                imageURL = "sample/resources/child/blockBasketFull.png";
             }
+            image.setImage(new Image(imageURL));
+            image.setFitHeight(70);
+            image.setFitWidth(70);
+
             childsBox.getChildren().add(index, image);
             pathTransition(image, path);
         });
@@ -195,7 +181,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(maxBalls);
         playingPath = new Path();
         playingPath.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 260));
         quietPath = new Path();
@@ -204,18 +189,13 @@ public class Controller implements Initializable {
         blockNoBallPath.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 280.001));
         blockBasketFullPath = new Path();
         blockBasketFullPath.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 280.001));
-
         count = 0;
         for(int i = 0; i < 11; i++) {
-            images[i] = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\basket\\basket_" + String.valueOf(i) + ".png";
+            images[i] = String.format("sample/resources/basket/basket_%d.png", i);
         }
         basket.setFitWidth(200);
         basket.setFitHeight(190);
-        try {
-            basket.setImage(new Image(new FileInputStream(images[Basket.balls])));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        basket.setImage(new Image(images[Basket.balls]));
         buffer = new StringBuilder();
         log.setText(buffer.toString());
         configureList();
