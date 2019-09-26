@@ -17,8 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -134,15 +132,13 @@ public class Controller implements Initializable {
         // Adiciona na lista de crianças
         park.addChild(newChild);
 
-
         // Cria uma nova imagem
         ImageView image = new ImageView();
 
         // Pega a imagem no diretorio e seta a altura e largura
-        image.setImage(new Image(newChild.isBall() ? "sample/resources/child/playing_1.png" : "sample/resources/child/block.png"));
+        image.setImage(new Image(newChild.isBall() ? "resources/child/playing_1.png" : "resources/child/block.png"));
         image.setFitHeight(70);
         image.setFitWidth(70);
-
 
         // Adiciona a nova imagem na Vertical Box
         childsBox.getChildren().add(image);
@@ -162,13 +158,13 @@ public class Controller implements Initializable {
 
             String imageURL = "";
             if(path == playingPath) {
-                imageURL = "sample/resources/child/playing_1.png";
+                imageURL = "resources/child/playing_1.png";
             } else if(path == quietPath) {
-                imageURL = "sample/resources/child/block.png";
+                imageURL = "resources/child/block.png";
             } else if(path == blockNoBallPath) {
-                imageURL = "sample/resources/child/block.png";
+                imageURL = "resources/child/block.png";
             } else if(path == blockBasketFullPath) {
-                imageURL = "sample/resources/child/blockBasketFull.png";
+                imageURL = "resources/child/blockBasketFull.png";
             }
             image.setImage(new Image(imageURL));
             image.setFitHeight(70);
@@ -191,7 +187,7 @@ public class Controller implements Initializable {
         blockBasketFullPath.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 280.001));
         count = 0;
         for(int i = 0; i < 11; i++) {
-            images[i] = String.format("sample/resources/basket/basket_%d.png", i);
+            images[i] = String.format("resources/basket/basket_%d.png", i);
         }
         basket.setFitWidth(200);
         basket.setFitHeight(190);
