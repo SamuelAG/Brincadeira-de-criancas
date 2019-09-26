@@ -61,7 +61,7 @@ public class Controller implements Initializable {
     @FXML
     private ImageView basket;
     private String[] images = new String[11];
-    private int count;
+    private static int count;
 
     private int maxBalls = InitController.maxBalls;
     private Park park = new Park(maxBalls);
@@ -92,22 +92,27 @@ public class Controller implements Initializable {
 
             @Override
             public void putABall() {
-                count++;
-                try {
-                    basket.setImage(new Image(new FileInputStream(images[count])));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(() -> {
+                    count++;
+                    try {
+                        basket.setImage(new Image(new FileInputStream(images[count])));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
+
             }
 
             @Override
             public void getABall() {
-                count--;
-                try {
-                    basket.setImage(new Image(new FileInputStream(images[count])));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(() -> {
+                    count--;
+                    try {
+                        basket.setImage(new Image(new FileInputStream(images[count])));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
 
             @Override
@@ -143,8 +148,8 @@ public class Controller implements Initializable {
         try {
             // Pega a imagem no diretorio e seta a altura e largura
             image.setImage(new Image(new FileInputStream(newChild.isBall() ?
-                    "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/child/playing_1.png" :
-                    "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/block.jpeg")));
+                    "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\playing_1.png" :
+                    "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png")));
             image.setFitHeight(70);
             image.setFitWidth(70);
         } catch (FileNotFoundException e) {
@@ -164,18 +169,18 @@ public class Controller implements Initializable {
     private void updatePath(Child child, Path path) {
         Platform.runLater(() -> {
             int index = park.getList().indexOf(child);
-            childsBox.getChildren().remove(0);
+            childsBox.getChildren().remove(index);
             ImageView image = new ImageView();
             try {
                 String imageURL = "";
                 if(path == playingPath) {
-                    imageURL = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/child/playing_1.png";
+                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\playing_1.png";
                 } else if(path == quietPath) {
-                    imageURL = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/block.jpeg";
+                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png";
                 } else if(path == blockNoBallPath) {
-                    imageURL = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/block.jpeg";
+                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\block.png";
                 } else if(path == blockBasketFullPath) {
-                    imageURL = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/child/blockBasketFull.png";
+                    imageURL = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\child\\blockBasketFull.png";
                 }
                 image.setImage(new Image(new FileInputStream(imageURL)));
                 image.setFitHeight(70);
@@ -201,21 +206,11 @@ public class Controller implements Initializable {
         blockBasketFullPath.getElements().addAll(new MoveTo(50, 280), new LineTo(50, 280.001));
 
         count = 0;
-        images[0] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_0.png";
-        images[1] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_1.png";
-        images[2] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_2.png";
-        images[3] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_3.png";
-        images[4] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_4.png";
-        images[5] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_5.png";
-        images[6] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_6.png";
-        images[7] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_7.png";
-        images[8] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_8.png";
-        images[9] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_9.png";
-        images[10] = "/home/samuel-alves/Downloads/Brincadeira-de-criancas/src/sample/resources/basket/basket_10.png";
-
+        for(int i = 0; i < 11; i++) {
+            images[i] = "C:\\Users\\josa_\\Desktop\\so\\Brincadeira-de-criancas\\src\\sample\\resources\\basket\\basket_" + String.valueOf(i) + ".png";
+        }
         basket.setFitWidth(200);
         basket.setFitHeight(190);
-
         try {
             basket.setImage(new Image(new FileInputStream(images[Basket.balls])));
         } catch (FileNotFoundException e) {

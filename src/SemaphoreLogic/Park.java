@@ -31,10 +31,10 @@ import java.util.concurrent.Semaphore;
  */
 
 public class Park {
-    private Semaphore spaces;
-    private Semaphore items;
-    private Semaphore mutex;
-    private List<Child> list;
+    public static Semaphore spaces;
+    public static Semaphore items;
+    public static Semaphore mutex;
+    public static List<Child> list;
 
     public Park(int maxBalls) {
         spaces = new Semaphore(maxBalls);
@@ -44,9 +44,6 @@ public class Park {
     }
 
     public void addChild(Child child) {
-        child.setSpaces(spaces);
-        child.setItems(items);
-        child.setMutex(mutex);
         child.setTimePlayingCounter(child.getTimePlaying());
         child.setTimeQuietCounter(child.getTimeQuiet());
         list.add(child);

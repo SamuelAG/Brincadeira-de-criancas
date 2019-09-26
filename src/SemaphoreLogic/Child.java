@@ -12,23 +12,11 @@ public class Child extends Thread {
     private int timeQuiet;
     private int timePlayingCounter;
     private int timeQuietCounter;
-    private Semaphore spaces;
-    private Semaphore items;
-    private Semaphore mutex;
     private CallBack callBack;
     private ChildState childState;
 
     public Child(){}
 
-    public Child(int idChild, boolean ball, int timePlaying, int timeQuiet, Semaphore spaces, Semaphore items, Semaphore mutex) {
-        this.idChild = idChild;
-        this.ball = ball;
-        this.timePlaying = timePlaying;
-        this.timeQuiet = timeQuiet;
-        this.spaces = spaces;
-        this.items = items;
-        this.mutex = mutex;
-    }
 
     @Override
     public void run() {
@@ -51,53 +39,55 @@ public class Child extends Thread {
     }
 
     void getAball() {
-        if(items.availablePermits() == 0) {
-            callBack.addToLog("O cesto está sem bola! " + idChild + " Bloqueada!\n");
+        if(Park.items.availablePermits() == 0) {
+            callBack.addToLog("O cesto está sem bola! Criança " + idChild + " Bloqueada!\n");
             callBack.blockNoBall(this);
         }
         try {
-            items.acquire();
+            Park.items.acquire();
+            callBack.addToLog("ACORDOU " + idChild);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         try {
-            mutex.acquire();
+            Park.mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Basket.balls--;
         callBack.getABall();
-        mutex.release();
-        spaces.release();
-        callBack.addToLog(this.idChild + "  pegou uma bola do cesto!\nBolas no cesto: " + Basket.balls + "\n");
+        Park.mutex.release();
+        Park.spaces.release();
+        callBack.addToLog("Criança " + this.idChild + "  pegou uma bola do cesto!\nBolas no cesto: " + Basket.balls + "\n");
     }
 
     void putAball() {
-        if (spaces.availablePermits() == 0) {
-            callBack.addToLog("O cesto está cheio! " + idChild + " Bloqueada!\n");
+        if (Park.spaces.availablePermits() == 0) {
+            callBack.addToLog("O cesto está cheio! Criança " + idChild + " Bloqueada!\n");
             callBack.blockFullBasket(this);
         }
         try {
-            spaces.acquire();
+            Park.spaces.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         try {
-            mutex.acquire();
+            Park.mutex.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Basket.balls++;
         callBack.putABall();
-        mutex.release();
-        items.release();
-        callBack.addToLog(this.idChild + "  colocou uma bola no cesto!\nBolas no cesto: " + Basket.balls + "\n");
+        Park.mutex.release();
+        Park.items.release();
+        callBack.addToLog(Park.items.availablePermits() + "Items\n");
+        callBack.addToLog("Criança " + this.idChild + "  colocou uma bola no cesto!\nBolas no cesto: " + Basket.balls + "\n");
 
     }
 
     public void cpuBound(long tempo) {
-        if(ball) callBack.addToLog(this.idChild + "  está brincando!\n");
-        else callBack.addToLog(this.idChild + "  está quieta\n");
+        if(ball) callBack.addToLog("Criança " + this.idChild + "  está brincando!\n");
+        else callBack.addToLog("Criança " + this.idChild + "  está quieta\n");
 
         long tempoAtual = System.currentTimeMillis();
         long tempoDecorrido = 0, milisegundos = 0;
@@ -119,8 +109,8 @@ public class Child extends Thread {
             tempoDecorrido = milisegundos / 1000;
         }
 
-        if(ball) callBack.addToLog(this.idChild + "  terminou de brincar :(\n");
-        else callBack.addToLog(this.idChild + "  não está mais quieta!\n");
+        if(ball) callBack.addToLog("Criança " + this.idChild + "  terminou de brincar :(\n");
+        else callBack.addToLog("Criança " + this.idChild + "  não está mais quieta!\n");
     }
 
     private void quiet() {
@@ -183,30 +173,6 @@ public class Child extends Thread {
 
     public void setTimeQuietCounter(int timeQuietCounter) {
         this.timeQuietCounter = timeQuietCounter;
-    }
-
-    public Semaphore getItems() {
-        return items;
-    }
-
-    public void setItems(Semaphore items) {
-        this.items = items;
-    }
-
-    public Semaphore getMutex() {
-        return mutex;
-    }
-
-    public void setMutex(Semaphore mutex) {
-        this.mutex = mutex;
-    }
-
-    public Semaphore getSpaces() {
-        return spaces;
-    }
-
-    public void setSpaces(Semaphore spaces) {
-        this.spaces = spaces;
     }
 
     public int getIdChild() {

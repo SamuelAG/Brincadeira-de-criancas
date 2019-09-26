@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="336.0" prefWidth="483.0" style="-fx-background-color: #E9967A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.InitController">
    <children>
-      <Label layoutX="65.0" layoutY="14.0" text="Brincadeira de Criança">
+      <Label layoutX="65.0" layoutY="14.0" text="Brincadeira de Crianças">
          <font>
             <Font size="32.0" />
          </font>

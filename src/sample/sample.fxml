@@ -25,7 +25,7 @@
           <TableColumn fx:id="timeQuietColumn" prefWidth="114.0" text="Tempo quieta" />
       </columns>
     </TableView>
-   <HBox fx:id="childsBox" layoutX="19.0" layoutY="84.0" prefHeight="332.0" prefWidth="1228.0" spacing="75.0" styleClass="box" />
+   <HBox fx:id="childsBox" layoutX="19.0" layoutY="84.0" prefHeight="319.0" prefWidth="1228.0" spacing="75.0" styleClass="box" />
    <Pane layoutY="-12.0" prefHeight="74.0" prefWidth="1263.0" style="-fx-background-color: #48D1CC;">
       <children>
          <Label layoutX="377.0" layoutY="14.0" style="-fx-background-color: #48D1CC;" text="Brincadeira de Crianças" textFill="WHITE">
@@ -37,7 +37,7 @@
    </Pane>
    <Pane layoutY="615.0" prefHeight="55.0" prefWidth="1263.0" style="-fx-background-color: #48D1CC;">
       <children>
-         <Button layoutX="1118.0" layoutY="15.0" mnemonicParsing="false" onAction="#removeChild" text="Remover Criança" />
+         <Button layoutX="1143.0" layoutY="15.0" mnemonicParsing="false" onAction="#removeChild" text="Remover Criança" />
       </children></Pane>
    <VBox layoutX="31.0" layoutY="432.0" prefHeight="169.0" prefWidth="176.0" spacing="12.0">
       <children>
